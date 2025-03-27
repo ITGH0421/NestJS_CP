@@ -19,6 +19,8 @@ export default function MealMenu() {
   const [weekDays, setWeekDays] = useState<{ day: string; date: string; rawDate: Date}[]>([]);
   const [selectedDay, setSelectedDay] = useState<{ day: string; date: string; rawDate: Date } | null>(null);
 
+  const [selectedDayByWeek, setSelectedDayByWeek] = useState<Record<number, { day: string; date: string; rawDate: Date }>>({});
+
   interface Dish {
     english: string;
     chinese: string;
@@ -43,7 +45,7 @@ export default function MealMenu() {
   useEffect(() => {
     const parsedStartDate = parseISO(startDate);
     const baseWeekStart = addDays(parsedStartDate, (selectedWeek - 1) * 7); // Adjust start date based on selected week
-    const startDayOffset = differenceInCalendarDays(baseWeekStart, BASE_DATE) % 7;
+    // const startDayOffset = differenceInCalendarDays(baseWeekStart, BASE_DATE) % 7;
 
     const rotatedWeek = Array.from({ length: 7 }).map((_, i) => {
       const date = addDays(baseWeekStart, i);
@@ -55,7 +57,21 @@ export default function MealMenu() {
     });
 
     setWeekDays(rotatedWeek);
-    setSelectedDay((prev) => prev ?? rotatedWeek[0]); // only auto-select first time
+
+    // Check if a day was selected before for this week
+    if (selectedDayByWeek[selectedWeek]) {
+      setSelectedDay(selectedDayByWeek[selectedWeek]);
+    } else {
+      // First time selecting this week — default to Day 1
+      const firstDay = rotatedWeek[0];
+      setSelectedDay(firstDay);
+      setSelectedDayByWeek((prev) => ({
+        ...prev,
+        [selectedWeek]: firstDay,
+      }));
+    }
+
+    // setSelectedDay(rotatedWeek[0]); // only auto-select first time
   }, [startDate, selectedWeek]);
 
   // Calculate the correct menu item for the selected day
@@ -121,7 +137,13 @@ export default function MealMenu() {
                   ? "bg-green-500 text-white shadow-md"
                   : "bg-gray-100 text-gray-700 hover:bg-green-100"
               }`}
-            onClick={() => setSelectedDay(item)}
+            onClick={() => {
+              setSelectedDay(item);
+              setSelectedDayByWeek((prev) => ({
+                ...prev,
+                [selectedWeek]: item,
+              }));
+            }}
           >
             <span className="uppercase font-semibold">{item.day.slice(0, 3)}</span>
             <span className="text-xs">{item.date}</span>
