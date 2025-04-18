@@ -9,23 +9,22 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@emotion/cache": "^11.14.0",
+    "@date-io/date-fns": "^3.2.1",
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
-    "@fontsource/barlow": "^5.2.5",
-    "@fontsource/public-sans": "^5.2.5",
-    "@mui/lab": "^7.0.0-beta.10",
-    "@mui/material": "^7.0.1",
-    "@mui/material-nextjs": "^7.0.0",
-    "@mui/x-data-grid": "^7.28.3",
-    "@mui/x-date-pickers": "^7.28.3",
-    "@mui/x-tree-view": "^7.28.1",
-    "next": "15.2.4",
+    "@mui/icons-material": "^7.0.2",
+    "@mui/lab": "^7.0.0-beta.11",
+    "@mui/material": "^7.0.2",
+    "@mui/x-data-grid": "^8.0.0",
+    "@mui/x-date-pickers": "^8.0.0",
+    "@mui/x-tree-view": "^8.0.0",
+    "date-fns": "^3.6.0",
+    "next": "15.3.1",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
   },
   "devDependencies": {
-    "@types/node": "^20.17.30",
+    "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "typescript": "^5"
