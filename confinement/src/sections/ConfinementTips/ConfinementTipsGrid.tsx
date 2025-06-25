@@ -17,7 +17,7 @@ import {
   Stack,
   Pagination
 } from '@mui/material';
-import articles from '../../data/article.json';
+import articles from '@/data/article.json';
 
 const getAllTags = (items: typeof articles) => {
   const tags = new Set<string>();
@@ -46,7 +46,7 @@ const ConfinementTipsGrid = () => {
 
   return (
     <Box sx={{ px: { xs: 2, md: 6 }, py: 8 }}>
-      <Typography variant="h4" align="center" sx={{ mb: 4, color: '#f27b96', fontWeight: 'bold' }}>
+      <Typography variant="h4" align="center" sx={{ mb: 4, color: '#f27b96' }}>
         Confinement Tips
       </Typography>
 
@@ -61,9 +61,9 @@ const ConfinementTipsGrid = () => {
             setPage(1);
           }}
         >
-          <MenuItem value="All">All Topic</MenuItem>
+          <MenuItem value="All" sx={{ color: '#f27b96' }}>All Topic</MenuItem>
           {allTags.map((tag) => (
-            <MenuItem key={tag} value={tag}>
+            <MenuItem key={tag} value={tag} sx={{ color: '#f27b96' }}>
               {tag.charAt(0).toUpperCase() + tag.slice(1)}
             </MenuItem>
           ))}
@@ -96,10 +96,10 @@ const ConfinementTipsGrid = () => {
                 sx={{ height: 200, objectFit: 'cover' }}
               />
               <CardContent sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column' }}>
-                <Typography variant="h6" fontWeight="bold" gutterBottom sx={{ color: '#f27b96' }}>
+                <Typography variant="h6" gutterBottom sx={{ color: '#f27b96' }}>
                   {tip.title}
                 </Typography>
-                <Typography variant="body2" color="text.secondary" gutterBottom sx={{ flexGrow: 1 }}>
+                <Typography variant="body2" color="#6D6E71" gutterBottom sx={{ flexGrow: 1 }}>
                   {tip.description}
                 </Typography>
                 <Stack direction="row" spacing={1.5} flexWrap="wrap" rowGap={1.5} mb={2} mt={2}>
