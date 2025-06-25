@@ -1,0 +1,74 @@
+[
+    {
+        "product_id": 1,
+        "name": "28 Days Dual Meal",
+        "description": "A 28-days meal plan with dual options for unch and Dinner.",
+        "type": "package",
+        "image":"/menu/product-1.webp",
+        "price": 1768.00,
+        "duration": 28
+    },
+    {
+        "product_id": 2,
+        "name": "28 Days Single Meal",
+        "description": "A 28-days meal plan with single meal for either Lunch or Dinner",
+        "type": "package",
+        "image":"/menu/product-2.webp",
+        "price": 968.00,
+        "duration": 28
+    },
+    {
+        "product_id": 3,
+        "name": "21 Days Dual Meal",
+        "description": "A 21-days meal plan with dual options for Lunch and Dinner.",
+        "type": "package",
+        "image":"/menu/product-3.webp",
+        "price": 1368.00,
+        "duration": 21
+    },
+    {
+        "product_id": 4,
+        "name": "21 Days Single Meal",
+        "description": "A 21-days meal plan with single meal for either Lunch or Dinner",
+        "type": "package",
+        "image":"/menu/product-4.webp",
+        "price": 728.00,
+        "duration": 21
+    },
+    {
+        "product_id": 5,
+        "name": "14 Days Dual Meal",
+        "description": "A 14-days meal plan with dual options for Lunch and Dinner.",
+        "type": "package",
+        "image":"/menu/product-5.webp",
+        "price": 968.00,
+        "duration": 14
+    },
+    {
+        "product_id": 6,
+        "name": "14 Days Single Meal",
+        "description": "A 14-days meal plan with single meal for either Lunch or Dinner",
+        "type": "package",
+        "image":"/menu/product-6.webp",
+        "price": 498.00,
+        "duration": 14
+    },
+    {
+        "product_id": 7,
+        "name": "7 Day Dual Meal",
+        "description": "A 7-days meal plan with dual options for Lunch and Dinner.",
+        "type": "package",
+        "image":"/menu/product-7.webp",
+        "price": 498.00,
+        "duration": 7
+    },
+    {
+        "product_id": 8,
+        "name": "Trial Meal",
+        "description": "A trial meal plan for 1 day with dual options for either Lunch or Dinner",
+        "type": "package",
+        "image":"/menu/product-8.webp",
+        "price": 38,
+        "duration": 1
+    }
+]
