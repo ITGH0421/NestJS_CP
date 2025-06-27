@@ -1,6 +1,4 @@
-import { pxToRem } from '@/utils/pxToRem';
-
-import { setFont } from '@/utils/setFont';
+import { pxToRem, setFont } from 'minimal-shared/utils';
 
 import { createTheme as getTheme } from '@mui/material/styles';
 
@@ -32,7 +30,8 @@ const secondaryFont = setFont(themeConfig.fontFamily.secondary);
 // ----------------------------------------------------------------------
 
 export const typography = {
-  fontFamily: 'Avenir, sans-serif',
+  fontFamily: primaryFont,
+  fontSecondaryFamily: secondaryFont,
   fontWeightLight: '300',
   fontWeightRegular: '400',
   fontWeightMedium: '500',

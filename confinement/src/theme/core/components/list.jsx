@@ -24,12 +24,7 @@ const MuiListItemText = {
   /** **************************************
    * DEFAULT PROPS
    *************************************** */
-  defaultProps: {
-    slotProps: {
-      primary: { typography: 'subtitle2' },
-      secondary: { component: 'span' },
-    },
-  },
+  defaultProps: { primaryTypographyProps: { typography: 'subtitle2' } },
 
   /** **************************************
    * STYLE

@@ -1,8 +1,7 @@
 'use client';
 
 import { isEqual } from 'es-toolkit';
-import { getCookie, getStorage } from 'minimal-shared/utils';
-import { useMemo, useState, useEffect, useCallback } from 'react';
+import { useMemo, useState, useCallback } from 'react';
 import { useCookies, useLocalStorage } from 'minimal-shared/hooks';
 
 import { SettingsContext } from './settings-context';
@@ -19,7 +18,6 @@ export function SettingsProvider({
   const isCookieEnabled = !!cookieSettings;
   const useStorage = isCookieEnabled ? useCookies : useLocalStorage;
   const initialSettings = isCookieEnabled ? cookieSettings : defaultSettings;
-  const getStorageValue = isCookieEnabled ? getCookie : getStorage;
 
   const { state, setState, resetState, setField } = useStorage(storageKey, initialSettings);
 
@@ -38,22 +36,6 @@ export function SettingsProvider({
   const onReset = useCallback(() => {
     resetState(defaultSettings);
   }, [defaultSettings, resetState]);
-
-  // Version check and reset handling
-  useEffect(() => {
-    const storedValue = getStorageValue(storageKey);
-
-    if (storedValue) {
-      try {
-        if (!storedValue.version || storedValue.version !== defaultSettings.version) {
-          onReset();
-        }
-      } catch {
-        onReset();
-      }
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   const memoizedValue = useMemo(
     () => ({

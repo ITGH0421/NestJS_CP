@@ -1,10 +1,12 @@
-import { varAlpha } from '@/utils/varAlpha';
+import { varAlpha } from 'minimal-shared/utils';
 
 import { buttonGroupClasses } from '@mui/material/ButtonGroup';
 
 // ----------------------------------------------------------------------
 
 const COLORS = ['primary', 'secondary', 'info', 'success', 'warning', 'error'];
+
+// ----------------------------------------------------------------------
 
 function styleColors(ownerState, styles) {
   const outputStyle = COLORS.reduce((acc, color) => {
@@ -78,9 +80,7 @@ const MuiButtonGroup = {
   styleOverrides: {
     root: {
       variants: [
-        /**
-         * @variant soft
-         */
+        // @variant soft
         softVariant.base,
         softVariant.colors,
       ].flat(),
@@ -91,15 +91,11 @@ const MuiButtonGroup = {
     contained: ({ theme, ownerState }) => {
       const styled = {
         colors: styleColors(ownerState, (color) => ({
-          [buttonClasses]: {
-            borderColor: varAlpha(theme.vars.palette[color].darkChannel, 0.48),
-          },
+          [buttonClasses]: { borderColor: varAlpha(theme.vars.palette[color].darkChannel, 0.48) },
         })),
         inheritColor: {
           ...(ownerState.color === 'inherit' && {
-            [buttonClasses]: {
-              borderColor: varAlpha(theme.vars.palette.grey['500Channel'], 0.32),
-            },
+            [buttonClasses]: { borderColor: varAlpha(theme.vars.palette.grey['500Channel'], 0.32) },
           }),
         },
         disabled: {
@@ -116,36 +112,16 @@ const MuiButtonGroup = {
       return { ...styled.inheritColor, ...styled.colors, ...styled.disabled };
     },
     /**
-     * @variant outlined
-     */
-    outlined: ({ theme, ownerState }) => {
-      const styled = {
-        inheritColor: {
-          ...(ownerState.color === 'inherit' && {
-            [`& .${buttonGroupClasses.grouped}`]: {
-              '&:hover': { borderColor: theme.vars.palette.text.primary },
-            },
-          }),
-        },
-      };
-
-      return { ...styled.inheritColor };
-    },
-    /**
      * @variant text
      */
     text: ({ theme, ownerState }) => {
       const styled = {
         colors: styleColors(ownerState, (color) => ({
-          [buttonClasses]: {
-            borderColor: varAlpha(theme.vars.palette[color].mainChannel, 0.48),
-          },
+          [buttonClasses]: { borderColor: varAlpha(theme.vars.palette[color].mainChannel, 0.48) },
         })),
         inheritColor: {
           ...(ownerState.color === 'inherit' && {
-            [buttonClasses]: {
-              borderColor: varAlpha(theme.vars.palette.grey['500Channel'], 0.32),
-            },
+            [buttonClasses]: { borderColor: varAlpha(theme.vars.palette.grey['500Channel'], 0.32) },
           }),
         },
         disabled: {

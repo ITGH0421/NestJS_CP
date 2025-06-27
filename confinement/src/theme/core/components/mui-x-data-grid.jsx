@@ -1,4 +1,4 @@
-import { varAlpha } from '@/utils/varAlpha';
+import { varAlpha } from 'minimal-shared/utils';
 
 import { listClasses } from '@mui/material/List';
 import { paperClasses } from '@mui/material/Paper';

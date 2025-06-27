@@ -1,5 +1,5 @@
-import { varAlpha } from '@/utils/varAlpha';
-import { createPaletteChannel } from '@/utils/createPaletteChannel';
+import { varAlpha, createPaletteChannel } from 'minimal-shared/utils';
+
 import { themeConfig } from '../theme-config';
 
 // ----------------------------------------------------------------------
@@ -88,46 +88,17 @@ export const basePalette = {
   divider: varAlpha(grey['500Channel'], 0.2),
 };
 
-// src/theme/core/palette.ts
-
-// src/theme/core/palette.ts
-
 export const palette = {
   light: {
-    primary: {
-      main: '#F27B96',
-      contrastText: '#FFFFFF',
-    },
-    secondary: {
-      main: '#6E7582',
-    },
-    background: {
-      default: '#FFFFFF',
-      paper: '#FFFFFF',
-    },
-    text: {
-      primary: '#212B36',
-      secondary: '#637381',
-    },
+    ...basePalette,
+    text: text.light,
+    background: background.light,
+    action: action.light,
   },
   dark: {
-    primary: {
-      main: '#F27B96',
-      contrastText: '#FFFFFF',
-    },
-    secondary: {
-      main: '#6E7582',
-    },
-    background: {
-      default: '#1A1A1A',
-      paper: '#2A2A2A',
-    },
-    text: {
-      primary: '#FFFFFF',
-      secondary: '#AAAAAA',
-    },
+    ...basePalette,
+    text: text.dark,
+    background: background.dark,
+    action: action.dark,
   },
 };
-
-
-
