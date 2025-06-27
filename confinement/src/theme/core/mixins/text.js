@@ -1,4 +1,4 @@
-import { remToPx } from '@/utils/remToPx';
+import { remToPx } from 'minimal-shared/utils';
 
 import { createTheme as getTheme } from '@mui/material/styles';
 

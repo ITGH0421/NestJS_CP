@@ -1,4 +1,4 @@
-import { varAlpha } from '@/utils/varAlpha';
+import { varAlpha } from 'minimal-shared/utils';
 
 import SvgIcon, { svgIconClasses } from '@mui/material/SvgIcon';
 import { autocompleteClasses } from '@mui/material/Autocomplete';

@@ -1,4 +1,4 @@
-import { varAlpha } from '@/utils/varAlpha';
+import { varAlpha } from 'minimal-shared/utils';
 
 import { inputBaseClasses } from '@mui/material/InputBase';
 import { filledInputClasses } from '@mui/material/FilledInput';

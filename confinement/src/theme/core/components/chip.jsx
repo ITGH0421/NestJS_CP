@@ -1,4 +1,4 @@
-import { varAlpha } from '@/utils/varAlpha';
+import { varAlpha } from 'minimal-shared/utils';
 
 import SvgIcon from '@mui/material/SvgIcon';
 import { chipClasses } from '@mui/material/Chip';
@@ -24,6 +24,8 @@ const ChipDeleteIcon = (props) => (
 
 const COLORS = ['primary', 'secondary', 'info', 'success', 'warning', 'error'];
 
+// ----------------------------------------------------------------------
+
 function styleColors(ownerState, styles) {
   const outputStyle = COLORS.reduce((acc, color) => {
     if (!ownerState.disabled && ownerState.color === color) {
@@ -42,9 +44,7 @@ const softVariant = {
     style: ({ theme }) => ({
       color: theme.vars.palette[color].dark,
       backgroundColor: varAlpha(theme.vars.palette[color].mainChannel, 0.16),
-      '&:hover': {
-        backgroundColor: varAlpha(theme.vars.palette[color].mainChannel, 0.32),
-      },
+      '&:hover': { backgroundColor: varAlpha(theme.vars.palette[color].mainChannel, 0.32) },
       ...theme.applyStyles('dark', {
         color: theme.vars.palette[color].light,
       }),
@@ -55,9 +55,7 @@ const softVariant = {
       props: ({ ownerState }) => ownerState.variant === 'soft' && ownerState.color === 'default',
       style: ({ theme }) => ({
         backgroundColor: varAlpha(theme.vars.palette.grey['500Channel'], 0.16),
-        '&:hover': {
-          backgroundColor: varAlpha(theme.vars.palette.grey['500Channel'], 0.32),
-        },
+        '&:hover': { backgroundColor: varAlpha(theme.vars.palette.grey['500Channel'], 0.32) },
       }),
     },
   ],
@@ -104,9 +102,7 @@ const MuiChip = {
 
       return {
         variants: [
-          /**
-           * @variant soft
-           */
+          // @variant soft
           softVariant.inheritColor,
           softVariant.colors,
         ].flat(),
@@ -121,12 +117,7 @@ const MuiChip = {
       color: 'currentColor',
       '&:hover': { opacity: 1, color: 'currentColor' },
     },
-    /**
-     * @sizes
-     */
-    sizeMedium: ({ theme }) => ({
-      borderRadius: theme.shape.borderRadius * 1.25,
-    }),
+    sizeMedium: ({ theme }) => ({ borderRadius: theme.shape.borderRadius * 1.25 }),
     sizeSmall: ({ theme }) => ({ borderRadius: theme.shape.borderRadius }),
     /**
      * @variant filled
@@ -138,9 +129,7 @@ const MuiChip = {
             ownerState.color === 'default' && {
               color: theme.vars.palette.common.white,
               backgroundColor: theme.vars.palette.text.primary,
-              [`& .${chipClasses.avatar}`]: {
-                color: theme.vars.palette.text.primary,
-              },
+              [`& .${chipClasses.avatar}`]: { color: theme.vars.palette.text.primary },
               '&:hover': { backgroundColor: theme.vars.palette.grey[700] },
               ...theme.applyStyles('dark', {
                 color: theme.vars.palette.grey[800],

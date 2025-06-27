@@ -12,7 +12,7 @@ import { iconifyClasses } from './classes';
 // ----------------------------------------------------------------------
 
 export const Iconify = forwardRef((props, ref) => {
-  const { className, width = 20, sx, icon, ...other } = props;
+  const { className, width = 20, sx, ...other } = props;
 
   const baseStyles = {
     width,
@@ -32,7 +32,6 @@ export const Iconify = forwardRef((props, ref) => {
     <NoSsr fallback={renderFallback()}>
       <IconRoot
         ssr
-        icon={icon} // ✅ explicitly pass icon
         ref={ref}
         className={mergeClasses([iconifyClasses.root, className])}
         sx={[baseStyles, ...(Array.isArray(sx) ? sx : [sx])]}
@@ -42,9 +41,11 @@ export const Iconify = forwardRef((props, ref) => {
   );
 });
 
+// https://iconify.design/docs/iconify-icon/disable-cache.html
 disableCache('local');
 
 // ----------------------------------------------------------------------
 
 const IconRoot = styled(Icon)``;
+
 const IconFallback = styled('span')``;

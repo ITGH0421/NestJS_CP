@@ -1,6 +1,6 @@
 import { m } from 'framer-motion';
 import { forwardRef } from 'react';
-import { varAlpha } from '@/utils/varAlpha';
+import { varAlpha } from 'minimal-shared/utils';
 
 import { styled } from '@mui/material/styles';
 

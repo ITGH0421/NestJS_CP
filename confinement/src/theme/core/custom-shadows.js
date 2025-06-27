@@ -1,4 +1,4 @@
-import { varAlpha } from '@/utils/varAlpha';
+import { varAlpha } from 'minimal-shared/utils';
 
 import { grey, info, error, common, primary, success, warning, secondary } from './palette';
 

@@ -1,4 +1,4 @@
-import { varAlpha } from '@/utils/varAlpha';
+import { varAlpha } from 'minimal-shared/utils';
 
 import { avatarGroupClasses } from '@mui/material/AvatarGroup';
 
