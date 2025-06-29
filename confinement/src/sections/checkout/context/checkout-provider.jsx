@@ -24,6 +24,9 @@ const initialState = {
   discount: 0,
   shipping: 0,
   billing: null,
+  starttype: null,
+  startdate: null,
+  confirmedOrEdd: null,
   totalItems: 0,
 };
 
@@ -101,6 +104,19 @@ function CheckoutContainer({ children }) {
     [activeStep, router]
   );
 
+  const onPayment = async () => {
+    // Call your backend API to create a Stripe Checkout Session
+    const res = await fetch('/api/create-stripe-session', {
+      method: 'POST',
+      body: JSON.stringify({ cart: state.items }),
+      headers: { 'Content-Type': 'application/json' },
+    });
+    const { url } = await res.json();
+
+    // Redirect to Stripe Checkout
+    window.location.href = url;
+  };
+
   const onAddToCart = useCallback(
     (newItem) => {
       const updatedItems = state.items.map((item) => {
@@ -119,6 +135,11 @@ function CheckoutContainer({ children }) {
       }
 
       setField('items', updatedItems);
+      setField('startdate', newItem.startdate);
+      setField('starttype', newItem.starttype);
+      setField('confirmedOrEdd', newItem.confirmedOrEdd);
+
+
     },
     [setField, state.items]
   );
@@ -173,6 +194,7 @@ function CheckoutContainer({ children }) {
     }
   }, [completed, resetState]);
 
+
   const memoizedValue = useMemo(
     () => ({
       state,
@@ -206,6 +228,7 @@ function CheckoutContainer({ children }) {
       onResetCart,
       onAddToCart,
       onChangeStep,
+      onPayment,
       onApplyDiscount,
       onApplyShipping,
       onDeleteCartItem,

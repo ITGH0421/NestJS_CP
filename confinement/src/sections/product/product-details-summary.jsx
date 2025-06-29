@@ -3,62 +3,63 @@ import { useForm, Controller } from 'react-hook-form';
 
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
-import Rating from '@mui/material/Rating';
+// import Rating from '@mui/material/Rating';
 import Button from '@mui/material/Button';
 import Divider from '@mui/material/Divider';
 import MenuItem from '@mui/material/MenuItem';
 import Typography from '@mui/material/Typography';
-import Link, { linkClasses } from '@mui/material/Link';
-import { formHelperTextClasses } from '@mui/material/FormHelperText';
+// import Link, { linkClasses } from '@mui/material/Link';
+import Radio from '@mui/material/Radio';
+import RadioGroup from '@mui/material/RadioGroup';
+import FormControlLabel from '@mui/material/FormControlLabel';
 
 import { paths } from 'src/routes/paths';
 import { useRouter } from 'src/routes/hooks';
 
 import { fCurrency, fShortenNumber } from 'src/utils/format-number';
 
-import { Label } from 'src/components/label';
+// import { Label } from 'src/components/label';
 import { Iconify } from 'src/components/iconify';
 import { Form, Field } from 'src/components/hook-form';
-import { ColorPicker } from 'src/components/color-utils';
-import { NumberInput } from 'src/components/number-input';
+// import { NumberInput } from 'src/components/number-input';
 
 // ----------------------------------------------------------------------
 
-export function ProductDetailsSummary({ items, product, onAddToCart, disableActions, ...other }) {
+export function ProductDetailsSummary({ items, product, addon, onAddToCart, disableActions, ...other }) {
   const router = useRouter();
 
   const {
-    id,
+    product_id,
     name,
-    sizes,
+    // sizes,
     price,
-    colors,
-    coverUrl,
-    newLabel,
-    available,
+    // colors,
+    image,
+    // available,
     priceSale,
-    saleLabel,
-    totalRatings,
-    totalReviews,
-    inventoryType,
-    subDescription,
+    // inventoryType,
+    // subDescription,
   } = product;
 
-  const existProduct = !!items?.length && items.map((item) => item.id).includes(id);
+
+  const {
+    addon_id,
+    addon_name,
+    addon_price
+  } = addon;
+
+  const existProduct = !!items?.length && items.map((item) => item.id).includes(product_id);
 
   const isMaxQuantity =
     !!items?.length &&
-    items.filter((item) => item.id === id).map((item) => item.quantity)[0] >= available;
+    items.filter((item) => item.id === product_id).map((item) => item.quantity)[0];
 
   const defaultValues = {
-    id,
+    product_id,
     name,
-    coverUrl,
-    available,
+    image,
     price,
-    colors: colors[0],
-    size: sizes[4],
-    quantity: available < 1 ? 0 : 1,
+    quantity: 1,
   };
 
   const methods = useForm({
@@ -86,8 +87,15 @@ export function ProductDetailsSummary({ items, product, onAddToCart, disableActi
     try {
       onAddToCart?.({
         ...values,
-        colors: [values.colors],
         subtotal: values.price * values.quantity,
+        startdate: values.date
+          ? new Date(
+            new Date(values.date).getTime() +
+            Math.abs(new Date(values.date).getTimezoneOffset()) * 60000
+          ).toISOString().slice(0, 10)
+          : null,
+        starttype: values.startType || null,
+        confirmedOrEdd: values.type || null,
       });
     } catch (error) {
       console.error(error);
@@ -96,124 +104,218 @@ export function ProductDetailsSummary({ items, product, onAddToCart, disableActi
 
   const renderPrice = () => (
     <Box sx={{ typography: 'h5' }}>
-      {priceSale && (
-        <Box
-          component="span"
-          sx={{ color: 'text.disabled', textDecoration: 'line-through', mr: 0.5 }}
-        >
-          {fCurrency(priceSale)}
-        </Box>
-      )}
+      {/* {priceSale && ( */}
+      <Box
+        component="span"
+        sx={{ color: 'text.disabled', textDecoration: 'line-through', mr: 0.5 }}
+      >
+        {fCurrency(priceSale)}
+      </Box>
+      {/* )} */}
 
       {fCurrency(price)}
     </Box>
   );
 
-  const renderShare = () => (
-    <Box
-      sx={{
-        gap: 3,
-        display: 'flex',
-        justifyContent: 'center',
-        [`& .${linkClasses.root}`]: {
-          gap: 1,
-          alignItems: 'center',
-          display: 'inline-flex',
-          color: 'text.secondary',
-          typography: 'subtitle2',
-        },
-      }}
-    >
-      <Link>
-        <Iconify icon="mingcute:add-line" width={16} />
-        Compare
-      </Link>
-
-      <Link>
-        <Iconify icon="solar:heart-bold" width={16} />
-        Favorite
-      </Link>
-
-      <Link>
-        <Iconify icon="solar:share-bold" width={16} />
-        Share
-      </Link>
-    </Box>
-  );
-
-  const renderColorOptions = () => (
+  const renderdateSelection = () => (
     <Box sx={{ display: 'flex' }}>
       <Typography variant="subtitle2" sx={{ flexGrow: 1 }}>
-        Color
+        Start Date :
       </Typography>
-
-      <Controller
-        name="colors"
-        control={control}
-        render={({ field }) => (
-          <ColorPicker
-            options={colors}
-            value={field.value}
-            onChange={(color) => field.onChange(color)}
-            limit={4}
-          />
-        )}
-      />
-    </Box>
-  );
-
-  const renderSizeOptions = () => (
-    <Box sx={{ display: 'flex' }}>
-      <Typography variant="subtitle2" sx={{ flexGrow: 1 }}>
-        Size
-      </Typography>
-
-      <Field.Select
-        name="size"
-        size="small"
-        helperText={
-          <Link underline="always" color="text.primary">
-            Size chart
-          </Link>
-        }
-        sx={{
-          maxWidth: 88,
-          [`& .${formHelperTextClasses.root}`]: { mx: 0, mt: 1, textAlign: 'right' },
-        }}
-      >
-        {sizes.map((size) => (
-          <MenuItem key={size} value={size}>
-            {size}
-          </MenuItem>
-        ))}
-      </Field.Select>
-    </Box>
-  );
-
-  const renderQuantity = () => (
-    <Box sx={{ display: 'flex' }}>
-      <Typography variant="subtitle2" sx={{ flexGrow: 1 }}>
-        Quantity
-      </Typography>
-
       <Stack spacing={1}>
-        <NumberInput
-          hideDivider
-          value={values.quantity}
-          onChange={(event, quantity) => setValue('quantity', quantity)}
-          max={available}
-          sx={{ maxWidth: 112 }}
+        <Field.DatePicker
+          name="date"
+          label="Select date"
+          value={values.date}
+          onChange={(date) => setValue('date', date)}
+          sx={{ maxWidth: 'fullWidth' }}
+        // minDate={new Date()}
+        // maxDate={new Date(new Date().setFullYear(new Date().getFullYear
+        //   () + 1)}
         />
-
-        <Typography
-          variant="caption"
-          component="div"
-          sx={{ textAlign: 'right', color: 'text.secondary' }}
-        >
-          Available: {available}
-        </Typography>
       </Stack>
     </Box>
+  );
+
+  // const renderQuantity = () => (
+  //   <Box sx={{ display: 'flex' }}>
+  //     <Typography variant="subtitle2" sx={{ flexGrow: 1 }}>
+  //       Quantity
+  //     </Typography>
+
+  //     <Stack spacing={1}>
+  //       <NumberInput
+  //         hideDivider
+  //         value={values.quantity}
+  //         onChange={(event, quantity) => setValue('quantity', quantity)}
+  //         // max={available}
+  //         sx={{ maxWidth: 112 }}
+  //       />
+
+  //       {/* <Typography
+  //         variant="caption"
+  //         component="div"
+  //         sx={{ textAlign: 'right', color: 'text.secondary' }}
+  //       >
+  //         Available: {available}
+  //       </Typography> */}
+  //     </Stack>
+  //   </Box>
+  // );
+
+  const renderStartType = () => (
+    <Box sx={{ display: 'flex', width: '100%' }}>
+      <Typography variant="subtitle2" sx={{ flexGrow: 1 }}>
+        Start with :
+      </Typography>
+      <Stack spacing={1} sx={{ flexGrow: 2 }}>
+        <Controller
+          name="startType"
+          control={control}
+          render={({ field }) => (
+            <RadioGroup
+              {...field}
+              row
+              onChange={(event) => field.onChange(event.target.value)}
+            >
+              <FormControlLabel value="lunch" control={<Radio />} label="Lunch" />
+              <FormControlLabel value="dinner" control={<Radio />} label="Dinner" />
+            </RadioGroup>
+          )}
+        />
+      </Stack>
+    </Box>
+  );
+
+  const renderDateStartType = () => (
+    <Box sx={{ display: 'flex', width: '100%' }}>
+      <Typography variant="subtitle2" sx={{ flexGrow: 1 }}>
+        Confirmed Start Date or E.D.D :
+      </Typography>
+      <Stack spacing={1} sx={{ flexGrow: 2 }}>
+        <Controller
+          name="type"
+          rules={{ required: true }}
+          control={control}
+          render={({ field }) => (
+            <Field.Select
+              {...field}
+              size="medium"
+              fullWidth
+              sx={{ width: '100%' }}
+              onChange={(event) => field.onChange(event.target.value)}
+            >
+              <MenuItem value="confirmed">Confirmed Start Date</MenuItem>
+              <MenuItem value="edd">E.D.D</MenuItem>
+            </Field.Select>
+          )}
+        />
+      </Stack>
+    </Box>
+  );
+
+
+  // const renderSpecialRequest = () => {
+  //   const values = useWatch({ control });
+
+  //   const SPECIAL_REQUEST_OPTIONS = [
+  //     { label: 'No Pork Innards', value: 'No Pork Innards' },
+  //     { label: 'No Pig Trotter', value: 'No Pig Trotter' },
+  //     { label: 'No Hong Zhao Chicken/Fish', value: 'No Hong Zhao Chicken/Fish' },
+  //     { label: 'No Chicken & Egg for the first 1 or 2 weeks', value: 'No Chicken & Egg for the first 1 or 2 weeks' },
+  //     { label: 'No Papaya Fish Soup', value: 'No Papaya Fish Soup' },
+  //     { label: 'No Salmon', value: 'No Salmon' },
+  //     { label: 'No Snow/Sweet Peas', value: 'No Snow/Sweet Peas' },
+  //     { label: 'No Sugar in Red Dates Tea', value: 'No Sugar in Red Dates Tea' },
+  //     { label: 'No Weekend Deliveries', value: 'No Weekend Deliveries' },
+  //   ];
+
+  //   return (
+  //     <Stack spacing={2} sx={{ width: '100%' }}>
+  //       {/* Toggle checkbox */}
+  //       <Controller
+  //         name="specialRequestCheckbox"
+  //         control={control}
+  //         defaultValue={false}
+  //         render={({ field }) => (
+  //           <FormControlLabel
+  //             control={
+  //               <Checkbox
+  //                 checked={field.value}
+  //                 onChange={(e) => field.onChange(e.target.checked)}
+  //               />
+  //             }
+  //             label="I have a special request"
+  //           />
+  //         )}
+  //       />
+
+  //       {/* Conditional rendering of special request checkboxes and notes */}
+  //       {values?.specialRequestCheckbox && (
+  //         <>
+  //           <RHFMultiCheckbox
+  //             name="specialRequests"
+  //             label="Select your special requests"
+  //             options={SPECIAL_REQUEST_OPTIONS}
+  //           />
+
+  //           <Controller
+  //             name="specialRequestNotes"
+  //             control={control}
+  //             defaultValue=""
+  //             render={({ field }) => (
+  //               <Field.TextField
+  //                 {...field}
+  //                 fullWidth
+  //                 placeholder="Additional notes or special instructions"
+  //                 multiline
+  //                 minRows={3}
+  //               />
+  //             )}
+  //           />
+  //         </>
+  //       )}
+  //     </Stack>
+  //   );
+  // };
+
+
+
+  const renderAddOns = () => (
+    <Stack spacing={1} sx={{ width: '100%' }}>
+      <Typography variant="subtitle2">Add-ons</Typography>
+      {Array.isArray(addon) && addon.length > 0 ? (
+        addon.map((add) => (
+          <Controller
+            key={add.addon_id}
+            name={`addons.${add.name}`}
+            control={control}
+            render={({ field }) => (
+              <FormControlLabel
+                control={
+                  <Radio
+                    checked={!!field.value}
+                    onChange={() => field.onChange(!field.value)}
+                  />
+                }
+                label={
+                  <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                    <Typography sx={{ mr: 1 }}>{add.name}</Typography>
+                    <Typography color="text.secondary">
+                      {fCurrency(add.price)}
+                    </Typography>
+                  </Box>
+                }
+              />
+            )}
+          />
+        ))
+      ) : (
+        <Typography variant="body2" color="text.secondary">
+          No add-ons available.
+        </Typography>
+      )}
+    </Stack>
   );
 
   const renderActions = () => (
@@ -222,7 +324,7 @@ export function ProductDetailsSummary({ items, product, onAddToCart, disableActi
         fullWidth
         disabled={isMaxQuantity || disableActions}
         size="large"
-        color="warning"
+        color="primary"
         variant="contained"
         startIcon={<Iconify icon="solar:cart-plus-bold" width={24} />}
         onClick={handleAddCart}
@@ -231,79 +333,87 @@ export function ProductDetailsSummary({ items, product, onAddToCart, disableActi
         Add to cart
       </Button>
 
-      <Button fullWidth size="large" type="submit" variant="contained" disabled={disableActions}>
+      <Button
+        fullWidth
+        size="large"
+        type="button"
+        variant="contained"
+        disabled={disableActions}
+        onClick={async () => {
+          try {
+            await handleAddCart();
+            router.push(paths.product.checkout);
+          } catch (error) {
+            console.error(error);
+          }
+        }}
+      >
         Buy now
       </Button>
     </Box>
   );
 
-  const renderSubDescription = () => (
-    <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-      {subDescription}
-    </Typography>
-  );
 
-  const renderRating = () => (
-    <Box
-      sx={{
-        display: 'flex',
-        typography: 'body2',
-        alignItems: 'center',
-        color: 'text.disabled',
-      }}
-    >
-      <Rating size="small" value={totalRatings} precision={0.1} readOnly sx={{ mr: 1 }} />
-      {`(${fShortenNumber(totalReviews)} reviews)`}
-    </Box>
-  );
 
-  const renderLabels = () =>
-    (newLabel.enabled || saleLabel.enabled) && (
-      <Box sx={{ gap: 1, display: 'flex', alignItems: 'center' }}>
-        {newLabel.enabled && <Label color="info">{newLabel.content}</Label>}
-        {saleLabel.enabled && <Label color="error">{saleLabel.content}</Label>}
-      </Box>
-    );
+  // const renderSubDescription = () => (
+  //   <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+  //     {subDescription}
+  //   </Typography>
+  // );
 
-  const renderInventoryType = () => (
-    <Box
-      component="span"
-      sx={{
-        typography: 'overline',
-        color:
-          (inventoryType === 'out of stock' && 'error.main') ||
-          (inventoryType === 'low stock' && 'warning.main') ||
-          'success.main',
-      }}
-    >
-      {inventoryType}
-    </Box>
-  );
+  // const renderLabels = () =>
+  // (newLabel.enabled || saleLabel.enabled) && (
+  // <Box sx={{ gap: 1, display: 'flex', alignItems: 'center' }}>
+  //   {newLabel.enabled && <Label color="info">{newLabel.content}</Label>}
+  //   {saleLabel.enabled && <Label color="error">{saleLabel.content}</Label>}
+  // </Box>
+  // );
+
+  // const renderInventoryType = () => (
+  //   <Box
+  //     component="span"
+  //     sx={{
+  //       typography: 'overline',
+  //       color:
+  //         (inventoryType === 'out of stock' && 'error.main') ||
+  //         (inventoryType === 'low stock' && 'warning.main') ||
+  //         'success.main',
+  //     }}
+  //   >
+  //     {inventoryType}
+  //   </Box>
+  // );
 
   return (
     <Form methods={methods} onSubmit={onSubmit}>
       <Stack spacing={3} sx={{ pt: 3 }} {...other}>
         <Stack spacing={2} alignItems="flex-start">
-          {renderLabels()}
-          {renderInventoryType()}
+          {/* {renderLabels()} */}
+          {/* {renderInventoryType()} */}
 
           <Typography variant="h5">{name}</Typography>
 
-          {renderRating()}
+          {/* {renderRating()} */}
           {renderPrice()}
-          {renderSubDescription()}
+          {/* {renderSubDescription()} */}
         </Stack>
 
         <Divider sx={{ borderStyle: 'dashed' }} />
 
-        {renderColorOptions()}
-        {renderSizeOptions()}
-        {renderQuantity()}
+        {/* {renderColorOptions()}
+        {renderSizeOptions()} */}
+        {renderDateStartType()}
+        {renderdateSelection()}
+        {renderStartType()}
+
+        {/* <Divider sx={{ borderStyle: 'dashed' }} />
+
+        {renderSpecialRequest()} */}
 
         <Divider sx={{ borderStyle: 'dashed' }} />
 
         {renderActions()}
-        {renderShare()}
+        {/* {renderShare()} */}
       </Stack>
     </Form>
   );

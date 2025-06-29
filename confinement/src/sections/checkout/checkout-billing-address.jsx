@@ -23,39 +23,14 @@ export function CheckoutBillingAddress() {
     <>
       <Grid container spacing={3}>
         <Grid size={{ xs: 12, md: 8 }}>
-          {_addressBooks.slice(0, 4).map((address) => (
-            <AddressItem
-              key={address.id}
-              address={address}
-              action={
-                <Box sx={{ flexShrink: 0, display: 'flex', flexWrap: 'wrap' }}>
-                  {!address.primary && (
-                    <Button size="small" color="error" sx={{ mr: 1 }}>
-                      Delete
-                    </Button>
-                  )}
-                  <Button
-                    variant="outlined"
-                    size="small"
-                    onClick={() => {
-                      onChangeStep('next');
-                      onCreateBillingAddress(address);
-                    }}
-                  >
-                    Deliver to this address
-                  </Button>
-                </Box>
-              }
-              sx={[
-                (theme) => ({
-                  p: 3,
-                  mb: 3,
-                  borderRadius: 2,
-                  boxShadow: theme.vars.customShadows.card,
-                }),
-              ]}
-            />
-          ))}
+          <AddressNewForm
+            open={addressForm.value}
+            onClose={addressForm.onFalse}
+            onCreate={(address) => {
+              onChangeStep('next');
+              onCreateBillingAddress(address);
+            }}
+          />
 
           <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
             <Button
@@ -66,15 +41,6 @@ export function CheckoutBillingAddress() {
             >
               Back
             </Button>
-
-            <Button
-              size="small"
-              color="primary"
-              onClick={addressForm.onTrue}
-              startIcon={<Iconify icon="mingcute:add-line" />}
-            >
-              New address
-            </Button>
           </Box>
         </Grid>
 
@@ -83,14 +49,7 @@ export function CheckoutBillingAddress() {
         </Grid>
       </Grid>
 
-      <AddressNewForm
-        open={addressForm.value}
-        onClose={addressForm.onFalse}
-        onCreate={(address) => {
-          onChangeStep('next');
-          onCreateBillingAddress(address);
-        }}
-      />
+
     </>
   );
 }
