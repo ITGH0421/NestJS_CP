@@ -11,7 +11,6 @@ import { fCurrency } from 'src/utils/format-number';
 
 import { Label } from 'src/components/label';
 import { Iconify } from 'src/components/iconify';
-import { ColorPreview } from 'src/components/color-utils';
 import { NumberInput } from 'src/components/number-input';
 
 // ----------------------------------------------------------------------
@@ -24,7 +23,7 @@ export function CheckoutCartProduct({ row, onDeleteCartItem, onChangeItemQuantit
           <Avatar
             variant="rounded"
             alt={row.name}
-            src={row.coverUrl}
+            src={row.image}
             sx={{ width: 64, height: 64 }}
           />
 
@@ -41,9 +40,9 @@ export function CheckoutCartProduct({ row, onDeleteCartItem, onChangeItemQuantit
                 color: 'text.secondary',
               }}
             >
-              size: <Label sx={{ ml: 0.5 }}> {row.size} </Label>
+              {row.confirmedOrEdd} Date: <Label sx={{ ml: 0.5 }}> {row.startdate}</Label>
               <Divider orientation="vertical" sx={{ mx: 1, height: 16 }} />
-              <ColorPreview colors={row.colors} />
+              {row.starttype}
             </Box>
           </Stack>
         </Box>
@@ -60,10 +59,11 @@ export function CheckoutCartProduct({ row, onDeleteCartItem, onChangeItemQuantit
             max={row.available}
           />
 
-          <Typography variant="caption" sx={{ color: 'text.secondary', display: 'block', mt: 1 }}>
+          {/* <Typography variant="caption" sx={{ color: 'text.secondary', display: 'block', mt: 1 }}>
             available: {row.available}
-          </Typography>
+          </Typography> */}
         </Box>
+
       </TableCell>
 
       <TableCell align="right">{fCurrency(row.price * row.quantity)}</TableCell>
@@ -74,5 +74,6 @@ export function CheckoutCartProduct({ row, onDeleteCartItem, onChangeItemQuantit
         </IconButton>
       </TableCell>
     </TableRow>
+
   );
 }

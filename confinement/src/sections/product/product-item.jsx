@@ -71,8 +71,9 @@ export function ProductItem({ product, detailsHref }) {
 
   const renderImage = () => (
     <Box sx={{ position: 'relative', p: 1 }}>
+      
       {/* {!!available && ( */}
-        <Fab
+        {/*<Fab
           size="medium"
           color="warning"
           onClick={handleAddCart}
@@ -108,9 +109,8 @@ export function ProductItem({ product, detailsHref }) {
 
   const renderContent = () => (
     <Stack spacing={2.5} sx={{ p: 3, pt: 2 }}>
-      <Link component={RouterLink} href={detailsHref} color="inherit" variant="subtitle2" noWrap>
+      
         {name}
-      </Link>
 
       <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
         {/* <Tooltip title="Color">
@@ -125,6 +125,7 @@ export function ProductItem({ product, detailsHref }) {
           )} */}
           <Box component="span">{fCurrency(price)}</Box>
         </Box>
+        
       </Box>
     </Stack>
   );
@@ -137,9 +138,11 @@ export function ProductItem({ product, detailsHref }) {
         },
       }}
     >
+      <Link component={RouterLink} href={detailsHref} color="inherit" variant="subtitle2" noWrap>
       {/* {renderLabels()} */}
       {renderImage()}
       {renderContent()}
+      </Link>
     </Card>
   );
 }

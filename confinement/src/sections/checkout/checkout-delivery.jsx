@@ -72,9 +72,7 @@ function OptionItem({ option, selected, sx, ...other }) {
       <Iconify
         width={28}
         icon={
-          (option.label === 'Standard' && 'carbon:delivery') ||
-          (option.label === 'Express' && 'carbon:rocket') ||
-          'carbon:bicycle'
+          'carbon:delivery'
         }
       />
       <Box sx={{ flex: '1 1 auto' }}>
@@ -91,13 +89,6 @@ function OptionItem({ option, selected, sx, ...other }) {
           </Box>
 
           {`$${option.value}`}
-        </Box>
-
-        <Box
-          component="span"
-          sx={{ display: 'flex', typography: 'body2', color: 'text.secondary' }}
-        >
-          {option.description}
         </Box>
       </Box>
     </Box>

@@ -1,0 +1,5 @@
+node_modules
+.vscode
+.next
+
+to be given manually

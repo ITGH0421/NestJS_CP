@@ -7,14 +7,30 @@ export async function getProducts() {
   // return res.data;
   const products = await import('src/_mock/_cpproduct.js');
   const res = products.PRODUCT;
-  // console.log('getProducts', res);
   return res;
 }
 
 // ----------------------------------------------------------------------
 
 export async function getProduct(id) {
-  const URL = id ? `${endpoints.product.details}?productId=${id}` : '';
-  const res = await axios.get(URL);
-  return res.data;
+  // Find the product where product_id or id matches the given id
+   // const URL = id ? `${endpoints.product.details}?productId=${id}` : '';
+  // const res = await axios.get(URL);
+  // return res.data;
+  const products = await import('src/_mock/_cpproduct.js');
+  const res = products.PRODUCT.find(
+    (product) => product.product_id == id || product.id == id
+  );
+  return { product: res }; // Wrap it for destructuring
 }
+
+export async function getAddon(){
+  const products = await import('src/_mock/_cpproduct.js');
+  const res = products.ADDONS;
+  console.log( 'addon:', res)
+  return res;
+}
+
+
+
+

@@ -157,6 +157,16 @@ export const ADDONS =
         image: "/menu/addon-9.webp",
         price: 66.00,
         duration: 5
+    },
+    {
+        addon_id:10,
+        name: "Comforting Set",
+        description: " All 3 Combo: Pig's Trotter, Milk Booting Fish & Papaya Soup and Homemade Bird's Nest",
+        type: "addOn",
+        image: "/menu/addon-9.webp",
+        price: 32.00,
+        duration: 3,
+
     }
 ]
 

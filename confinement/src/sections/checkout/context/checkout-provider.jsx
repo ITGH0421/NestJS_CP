@@ -24,6 +24,9 @@ const initialState = {
   discount: 0,
   shipping: 0,
   billing: null,
+  starttype: null,
+  startdate: null,
+  confirmedOrEdd: null,
   totalItems: 0,
 };
 
@@ -56,7 +59,7 @@ function CheckoutContainer({ children }) {
   );
 
   const canReset = !isEqual(state, initialState);
-  const completed = activeStep === CHECKOUT_STEPS.length;
+  const completed = activeStep === CHECKOUT_STEPS.length; // completed when stripe payment is succesfull ( to be modified )
 
   const updateTotals = useCallback(() => {
     const totalItems = state.items.reduce((total, item) => total + item.quantity, 0);
@@ -101,6 +104,24 @@ function CheckoutContainer({ children }) {
     [activeStep, router]
   );
 
+  const onPayment = async () => {
+    // Call your backend API to create a Stripe Checkout Session
+    try {
+      const res = await fetch('http://localhost:3032/api/checkout', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ products: state.items }),
+      });
+      const data = await res.json();
+      if (data.url) {
+        // Redirect to Stripe Checkout
+        window.location.href = data.url
+      }
+    } catch (error) {
+      console.error('error during checkout', error);
+    }
+  };
+
   const onAddToCart = useCallback(
     (newItem) => {
       const updatedItems = state.items.map((item) => {
@@ -119,6 +140,11 @@ function CheckoutContainer({ children }) {
       }
 
       setField('items', updatedItems);
+      setField('startdate', newItem.startdate);
+      setField('starttype', newItem.starttype);
+      setField('confirmedOrEdd', newItem.confirmedOrEdd);
+
+
     },
     [setField, state.items]
   );
@@ -126,10 +152,12 @@ function CheckoutContainer({ children }) {
   const onDeleteCartItem = useCallback(
     (itemId) => {
       const updatedItems = state.items.filter((item) => item.id !== itemId);
-
       setField('items', updatedItems);
+      if (updatedItems.length === 0) {
+        resetState(initialState);
+      }
     },
-    [setField, state.items]
+    [setField, state.items, resetState]
   );
 
   const onChangeItemQuantity = useCallback(
@@ -168,10 +196,9 @@ function CheckoutContainer({ children }) {
   );
 
   const onResetCart = useCallback(() => {
-    if (completed) {
-      resetState(initialState);
-    }
-  }, [completed, resetState]);
+    resetState(initialState);
+  }, [resetState]);
+
 
   const memoizedValue = useMemo(
     () => ({
@@ -194,6 +221,7 @@ function CheckoutContainer({ children }) {
       onDeleteCartItem,
       onChangeItemQuantity,
       onCreateBillingAddress,
+      onPayment
     }),
     [
       state,
@@ -206,6 +234,7 @@ function CheckoutContainer({ children }) {
       onResetCart,
       onAddToCart,
       onChangeStep,
+      onPayment,
       onApplyDiscount,
       onApplyShipping,
       onDeleteCartItem,

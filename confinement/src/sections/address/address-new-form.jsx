@@ -17,19 +17,16 @@ import { Form, Field, schemaHelper } from 'src/components/hook-form';
 // ----------------------------------------------------------------------
 
 export const NewAddressSchema = zod.object({
-  city: zod.string().min(1, { message: 'City is required!' }),
-  state: zod.string().min(1, { message: 'State is required!' }),
   name: zod.string().min(1, { message: 'Name is required!' }),
+  email: zod.string().min(1, { message: 'Email Address is required!' }),
   address: zod.string().min(1, { message: 'Address is required!' }),
-  zipCode: zod.string().min(1, { message: 'Zip code is required!' }),
+  zipCode: zod.string().min(1, { message: 'Postal code is required!' }),
   phoneNumber: schemaHelper.phoneNumber({ isValid: isValidPhoneNumber }),
-  country: schemaHelper.nullableInput(zod.string().min(1, { message: 'Country is required!' }), {
-    // message for null value
-    message: 'Country is required!',
-  }),
   // Not required
-  primary: zod.boolean(),
+  floor: zod.string(),
+  unit: zod.string(),
   addressType: zod.string(),
+
 });
 
 // ----------------------------------------------------------------------
@@ -37,9 +34,10 @@ export const NewAddressSchema = zod.object({
 export function AddressNewForm({ open, onClose, onCreate }) {
   const defaultValues = {
     name: '',
-    city: '',
-    state: '',
+    email: '',
     address: '',
+    floor: '',
+    unit: '',
     zipCode: '',
     country: '',
     primary: true,
@@ -62,79 +60,55 @@ export function AddressNewForm({ open, onClose, onCreate }) {
     try {
       onCreate({
         name: data.name,
-        phoneNumber: data.phoneNumber,
-        fullAddress: `${data.address}, ${data.city}, ${data.state}, ${data.country}, ${data.zipCode}`,
+        phoneNumber: `${data.phoneNumber}, ${data.email}`,
+        fullAddress: `${data.address}, # ${data.floor} - ${data.unit} ,Singapore ${data.zipCode}`,
         addressType: data.addressType,
-        primary: data.primary,
       });
-      onClose();
     } catch (error) {
       console.error(error);
     }
   });
 
   return (
-    <Dialog fullWidth maxWidth="sm" open={open} onClose={onClose}>
-      <Form methods={methods} onSubmit={onSubmit}>
-        <DialogTitle>New address</DialogTitle>
+    <Form methods={methods} onSubmit={onSubmit}>
+      <Box sx={{ mb: 3 }}>
+        <h2>Delivery Address</h2>
+      </Box>
+      <Stack spacing={2} sx={{ mb: 2 }}>
+        <Box
+          sx={{
+            rowGap: 3,
+            columnGap: 2,
+            display: 'grid',
+            gridTemplateColumns: { xs: 'repeat(1, 1fr)', sm: 'repeat(2, 1fr)' },
+          }}
+        >
+          <Field.Text name="name" label="Full name" />
 
-        <DialogContent dividers>
-          <Stack spacing={3}>
-            <Field.RadioGroup
-              row
-              name="addressType"
-              options={[
-                { label: 'Home', value: 'Home' },
-                { label: 'Office', value: 'Office' },
-              ]}
-            />
+          <Field.Phone name="phoneNumber" label="Phone number" country="SG" />
+        </Box>
+        <Field.Text name="email" label="Email Address" type="email" />
+        <Field.Text name="address" label="Address" />
 
-            <Box
-              sx={{
-                rowGap: 3,
-                columnGap: 2,
-                display: 'grid',
-                gridTemplateColumns: { xs: 'repeat(1, 1fr)', sm: 'repeat(2, 1fr)' },
-              }}
-            >
-              <Field.Text name="name" label="Full name" />
+        <Box
+          sx={{
+            rowGap: 3,
+            columnGap: 2,
+            display: 'grid',
+            gridTemplateColumns: { xs: 'repeat(1, 1fr)', sm: 'repeat(3, 1fr)' },
+          }}
+        >
+          <Field.Text name="floor" label="Floor" />
+          <Field.Text name="unit" label="Unit" />
+          <Field.Text name="zipCode" label="Postal Code" />
+        </Box>
+      </Stack>
 
-              <Field.Phone name="phoneNumber" label="Phone number" country="US" />
-            </Box>
-
-            <Field.Text name="address" label="Address" />
-
-            <Box
-              sx={{
-                rowGap: 3,
-                columnGap: 2,
-                display: 'grid',
-                gridTemplateColumns: { xs: 'repeat(1, 1fr)', sm: 'repeat(3, 1fr)' },
-              }}
-            >
-              <Field.Text name="city" label="Town/city" />
-
-              <Field.Text name="state" label="State" />
-
-              <Field.Text name="zipCode" label="Zip/code" />
-            </Box>
-
-            <Field.CountrySelect name="country" label="Country" placeholder="Choose a country" />
-
-            <Field.Checkbox name="primary" label="Use this address as default." />
-          </Stack>
-        </DialogContent>
-
-        <DialogActions>
-          <Button color="inherit" variant="outlined" onClick={onClose}>
-            Cancel
-          </Button>
-
-          <LoadingButton type="submit" variant="contained" loading={isSubmitting}>
-            Deliver to this address
-          </LoadingButton>
-        </DialogActions>
-      </Form>
-    </Dialog>
+      <Stack direction="row" spacing={2} justifyContent="flex-end">
+        <LoadingButton type="submit" variant="contained" loading={isSubmitting}>
+          Proceed to Payment
+        </LoadingButton>
+      </Stack>
+    </Form>
   );
 }
