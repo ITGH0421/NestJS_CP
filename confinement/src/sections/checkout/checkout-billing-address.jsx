@@ -15,7 +15,7 @@ import { AddressItem, AddressNewForm } from '../address';
 // ----------------------------------------------------------------------
 
 export function CheckoutBillingAddress() {
-  const { onChangeStep, onCreateBillingAddress, state: checkoutState } = useCheckoutContext();
+  const { onPayment, onChangeStep, onCreateBillingAddress, state: checkoutState } = useCheckoutContext();
 
   const addressForm = useBoolean();
 
@@ -26,9 +26,9 @@ export function CheckoutBillingAddress() {
           <AddressNewForm
             open={addressForm.value}
             onClose={addressForm.onFalse}
-            onCreate={(address) => {
-              onChangeStep('next');
+            onCreate={async (address) => {
               onCreateBillingAddress(address);
+              await onPayment(); // call stripe checkout session.
             }}
           />
 

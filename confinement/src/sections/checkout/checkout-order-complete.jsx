@@ -47,11 +47,6 @@ export function CheckoutOrderComplete({ onResetCart, onDownloadPDF, ...other }) 
         <Typography>
           Thanks for placing order
           <br />
-          <br />
-          <Link>01dc1370-3df6-11eb-b378-0242ac130002</Link>
-          <br />
-          <br />
-          We will send you a notification within 5 days when it ships.
           <br /> If you have any question or queries then fell to get in contact us. <br />
           All the best,
         </Typography>
